@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class bb : MonoBehaviour
 {
@@ -7,26 +7,39 @@ public class bb : MonoBehaviour
     private GameObject currentBoundingBox;
     private Vector3 startPoint;
     private bool isDragging = false;
-    private InputAction selectAction;
+    private XRController controller;
 
-    void Awake()
+    void Start()
     {
-        // Initialize the input action from the Input Actions asset
-        var inputActionAsset = (InputActionAsset)Resources.Load("InputActions"); // Ensure this matches your created Input Actions asset's name
-        selectAction = inputActionAsset.FindActionMap("XRRig").FindAction("Select");
-
-        selectAction.started += ctx => StartDragging();
-        selectAction.canceled += ctx => EndDragging();
+        // You might need to find the controller based on whether it's the left or right hand.
+        controller = FindObjectOfType<XRController>(); // Simplified way to find controller. Adapt as necessary.
     }
 
-    void OnEnable()
+    void Update()
     {
-        selectAction.Enable();
+        if (controller)
+        {
+            CheckInput();
+            if (isDragging)
+            {
+                UpdateBoundingBox();
+            }
+        }
     }
 
-    void OnDisable()
+    private void CheckInput()
     {
-        selectAction.Disable();
+        if (controller.inputDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out bool triggerValue) && triggerValue)
+        {
+            if (!isDragging)
+            {
+                StartDragging();
+            }
+        }
+        else if (isDragging)
+        {
+            EndDragging();
+        }
     }
 
     private void StartDragging()
@@ -37,15 +50,12 @@ public class bb : MonoBehaviour
         isDragging = true;
     }
 
-    private void Update()
+    private void UpdateBoundingBox()
     {
-        if (isDragging)
-        {
-            Vector3 currentPoint = GetControllerPosition();
-            Vector3 center = (startPoint + currentPoint) / 2;
-            currentBoundingBox.transform.position = center;
-            currentBoundingBox.transform.localScale = new Vector3(Mathf.Abs(currentPoint.x - startPoint.x), Mathf.Abs(currentPoint.y - startPoint.y), Mathf.Abs(currentPoint.z - startPoint.z));
-        }
+        Vector3 currentPoint = GetControllerPosition();
+        Vector3 center = (startPoint + currentPoint) / 2;
+        currentBoundingBox.transform.position = center;
+        currentBoundingBox.transform.localScale = new Vector3(Mathf.Abs(currentPoint.x - startPoint.x), Mathf.Abs(currentPoint.y - startPoint.y), Mathf.Abs(currentPoint.z - startPoint.z));
     }
 
     private void EndDragging()
@@ -55,8 +65,7 @@ public class bb : MonoBehaviour
 
     private Vector3 GetControllerPosition()
     {
-        // Implement this to return the current VR controller position
-        // This may involve directly accessing the Transform of the controller or using more specific OpenXR input data
-        return new Vector3(); // Return the actual position
+        // Assuming the controller has an attached Transform representing its physical position
+        return controller.transform.position;
     }
 }
