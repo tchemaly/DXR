@@ -1,71 +1,56 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
 public class bb : MonoBehaviour
 {
-    public GameObject boundingBoxVisualPrefab; // Prefab with a transparent material
-    private GameObject currentBoundingBox;
-    private Vector3 startPoint;
-    private bool isDragging = false;
-    private XRController controller;
+    public GameObject cubePrefab; // Assign the cube prefab in the Unity inspector
+    public Transform controllerTransform; // Assign this to the actual controller transform
 
-    void Start()
-    {
-        // You might need to find the controller based on whether it's the left or right hand.
-        controller = FindObjectOfType<XRController>(); // Simplified way to find controller. Adapt as necessary.
-    }
+    private GameObject currentCube = null;
+    private bool isDragging = false;
+    private Vector3 startPosition;
 
     void Update()
     {
-        if (controller)
+        // Check if the trigger on the right controller is being pressed down
+        if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
         {
-            CheckInput();
-            if (isDragging)
-            {
-                UpdateBoundingBox();
-            }
+            StartDragging();
         }
-    }
 
-    private void CheckInput()
-    {
-        if (controller.inputDevice.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out bool triggerValue) && triggerValue)
+        // While the trigger is held down, update the cube's size and position
+        if (isDragging && OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
         {
-            if (!isDragging)
-            {
-                StartDragging();
-            }
+            UpdateDragging();
         }
-        else if (isDragging)
+
+        // When the trigger is released, finalize the size and position of the cube
+        if (isDragging && OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
         {
             EndDragging();
         }
     }
 
-    private void StartDragging()
+    void StartDragging()
     {
-        startPoint = GetControllerPosition();
-        currentBoundingBox = Instantiate(boundingBoxVisualPrefab, startPoint, Quaternion.identity);
-        currentBoundingBox.transform.localScale = Vector3.zero;
+        startPosition = controllerTransform.position; // Start position is the current position of the controller
+        currentCube = Instantiate(cubePrefab, startPosition, Quaternion.identity);
         isDragging = true;
     }
 
-    private void UpdateBoundingBox()
+    void UpdateDragging()
     {
-        Vector3 currentPoint = GetControllerPosition();
-        Vector3 center = (startPoint + currentPoint) / 2;
-        currentBoundingBox.transform.position = center;
-        currentBoundingBox.transform.localScale = new Vector3(Mathf.Abs(currentPoint.x - startPoint.x), Mathf.Abs(currentPoint.y - startPoint.y), Mathf.Abs(currentPoint.z - startPoint.z));
+        if (currentCube != null)
+        {
+            Vector3 currentPosition = controllerTransform.position;
+            Vector3 size = currentPosition - startPosition;
+            currentCube.transform.localScale = new Vector3(Mathf.Abs(size.x), Mathf.Abs(size.y), Mathf.Abs(size.z));
+            currentCube.transform.position = startPosition + size / 2; // Position at the midpoint
+        }
     }
 
-    private void EndDragging()
+    void EndDragging()
     {
         isDragging = false;
-    }
-
-    private Vector3 GetControllerPosition()
-    {
-        // Assuming the controller has an attached Transform representing its physical position
-        return controller.transform.position;
+        // Optionally, you can finalize the cube or make any adjustments here
     }
 }

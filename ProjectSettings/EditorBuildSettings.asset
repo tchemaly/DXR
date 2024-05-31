@@ -6,18 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
+    path: Assets/Scenes/BasicCameraRigBB.unity
+    guid: 624dc17be2b72b44c9c14489aa649370
   - enabled: 0
-    path: Assets/Scenes/LabelingScene.unity
-    guid: 31067a4248ea91e458da3fd5e2a5b574
+    path: Assets/Scenes/BasicCameraRigWiithPassthroughBB.unity
+    guid: 756222992262a1744bc8f39cc71fa297
   - enabled: 0
-    path: Assets/Samples/XR Interaction Toolkit/2.5.4/Starter Assets/DemoScene.unity
-    guid: 319dafa5c80f29f428dc1e0d03f04177
+    path: Assets/Scenes/TabletopBowlingGameBB.unity
+    guid: 032e0abc80cec4b4a9df3110dde33d39
   - enabled: 1
     path: Assets/Scenes/TrishiaLabelingScene.unity
-    guid: 8999235585cf22b45ad865202d2b54d9
+    guid: 3211d97e2d2016c4fb1cb17b4024b14a
   m_configObjects:
-    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 9ab8c54adead9db42bf02fd2dfc8d324, type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 805ec67c781d71a4c961f6baa5e9c9e2, type: 2}
-    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: a7f6ad3240a26ed44828452d512671fe, type: 2}
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: ce4111c17cceddc4295d4b0632d4282a, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 324a03908385fa54fba7e39799bf40b2, type: 2}
