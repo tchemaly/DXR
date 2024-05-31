@@ -5,9 +5,18 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 0
+    path: Assets/Scenes/LabelingScene.unity
+    guid: 31067a4248ea91e458da3fd5e2a5b574
+  - enabled: 0
+    path: Assets/Samples/XR Interaction Toolkit/2.5.4/Starter Assets/DemoScene.unity
+    guid: 319dafa5c80f29f428dc1e0d03f04177
+  - enabled: 1
+    path: Assets/Scenes/TrishiaLabelingScene.unity
+    guid: 8999235585cf22b45ad865202d2b54d9
   m_configObjects:
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 9ab8c54adead9db42bf02fd2dfc8d324, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 805ec67c781d71a4c961f6baa5e9c9e2, type: 2}
