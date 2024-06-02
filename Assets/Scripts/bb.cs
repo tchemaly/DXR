@@ -9,6 +9,11 @@ public class bb : MonoBehaviour
     private bool isDragging = false;
     private Vector3 startPosition;
 
+    public GameObject CurrentCube
+    {
+        get { return currentCube; }
+    }
+
     void Update()
     {
         // Check if the trigger on the right controller is being pressed down
