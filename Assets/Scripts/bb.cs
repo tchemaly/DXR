@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class bb : MonoBehaviour
 {
@@ -6,12 +7,17 @@ public class bb : MonoBehaviour
     public Transform controllerTransform; // Assign this to the actual controller transform
 
     private GameObject currentCube = null;
+    private TMP_Text label;
     private bool isDragging = false;
     private Vector3 startPosition;
 
-    public GameObject CurrentCube
+    public void UpdateLabelText(string newText)
     {
-        get { return currentCube; }
+        if (label != null)
+        {
+            label.text = newText;
+        }
+        Debug.Log(label.text);
     }
 
     void Update()
@@ -39,6 +45,7 @@ public class bb : MonoBehaviour
     {
         startPosition = controllerTransform.position; // Start position is the current position of the controller
         currentCube = Instantiate(cubePrefab, startPosition, Quaternion.identity);
+        label = currentCube.GetComponentInChildren<TMP_Text>();
         isDragging = true;
     }
 

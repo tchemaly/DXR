@@ -18,10 +18,13 @@ namespace Samples.Whisper
         private float time;
         private OpenAIApi openai = new OpenAIApi("");
 
-        public bb bbScript;
+        public GameObject ScriptManager;
 
         private void Start()
         {
+
+            Debug.Log("First Hello");
+
             if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
             {
                 Permission.RequestUserPermission(Permission.Microphone);
@@ -70,6 +73,10 @@ namespace Samples.Whisper
                 if (!string.IsNullOrEmpty(res.Text))
                 {
                     message.text = res.Text;
+                    Debug.Log("Message Text Updated: " + res.Text);
+                    Debug.Log("Hello");
+                    ScriptManager.GetComponent<bb>().UpdateLabelText(res.Text);
+                    Debug.Log("Bye");
                 }
                 else
                 {
@@ -81,14 +88,6 @@ namespace Samples.Whisper
                 message.text = "Error: " + e.Message;
             }
 
-
-
-            //if (bbScript.CurrentCube != null)
-            //{
-            //    Transform textTransform = bbScript.CurrentCube.transform.Find("Text");
-            //    TMP_Text childTextComponent = textTransform.GetComponent<TMP_Text>();
-            //    childTextComponent.text = res.Text;
-            //}
         }
 
         private void Update()
