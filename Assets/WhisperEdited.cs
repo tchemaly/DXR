@@ -1,13 +1,14 @@
 using System;
 using OpenAI;
 using UnityEngine;
-using TMPro; // Include the TextMeshPro namespace
+using TMPro;
+using UnityEngine.Android;
 
 namespace Samples.Whisper
 {
     public class WhisperEdited : MonoBehaviour
     {
-        [SerializeField] private TMP_Text message; // Change to TMP_Text
+        [SerializeField] private TMP_Text message; 
 
         private readonly string fileName = "output.wav";
         private readonly int duration = 5;
@@ -15,33 +16,40 @@ namespace Samples.Whisper
         private AudioClip clip;
         private bool isRecording;
         private float time;
-        private OpenAIApi openai = new OpenAIApi();
+        private OpenAIApi openai = new OpenAIApi("");
 
         public bb bbScript;
 
         private void Start()
         {
+            if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
+            {
+                Permission.RequestUserPermission(Permission.Microphone);
+            }
+
 #if UNITY_WEBGL && !UNITY_EDITOR
-            message.text = "Microphone not supported on WebGL";
+            dropdown.options.Add(new Dropdown.OptionData("Microphone not supported on WebGL"));
 #else
-            if (Microphone.devices.Length > 0)
-            {
-                StartRecording();
-            }
-            else
-            {
-                message.text = "No microphone detected";
-            }
+            // foreach (var device in Microphone.devices)
+            // {
+            //     dropdown.options.Add(new TMP_Dropdown.OptionData(device));
+            // }
+            // recordButton.onClick.AddListener(StartRecording);
+            StartRecording();
+            // dropdown.onValueChanged.AddListener(ChangeMicrophone);
+
+            var index = PlayerPrefs.GetInt("user-mic-device-index");
+            // dropdown.SetValueWithoutNotify(index);
 #endif
         }
 
         private void StartRecording()
         {
             isRecording = true;
-            #if !UNITY_WEBGL
-                        // Start recording from the default microphone
-                        clip = Microphone.Start(null, false, duration, 44100);
-            #endif
+#if !UNITY_WEBGL
+            // Start recording from the default microphone
+            clip = Microphone.Start(null, false, duration, 44100);
+#endif
         }
 
         private async void EndRecording()
