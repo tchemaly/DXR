@@ -18,12 +18,14 @@ namespace Samples.Whisper
         private float time;
         private OpenAIApi openai = new OpenAIApi("");
 
+        public GameObject whisperobj;
+        public GameObject Speakobj;
+
         public GameObject ScriptManager;
 
         private void Start()
         {
-
-            Debug.Log("First Hello");
+            Speakobj.SetActive(true);
 
             if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
             {
@@ -67,25 +69,20 @@ namespace Samples.Whisper
                 Model = "whisper-1",
                 Language = "en"
             };
-            try
+
+            var res = await openai.CreateAudioTranscription(req);
+            if (!string.IsNullOrEmpty(res.Text))
             {
-                var res = await openai.CreateAudioTranscription(req);
-                if (!string.IsNullOrEmpty(res.Text))
-                {
-                    message.text = res.Text;
-                    Debug.Log("Message Text Updated: " + res.Text);
-                    Debug.Log("Hello");
-                    ScriptManager.GetComponent<bb>().UpdateLabelText(res.Text);
-                    Debug.Log("Bye");
-                }
-                else
-                {
-                    message.text = "Transcription successful but no text returned.";
-                }
+                message.text = res.Text;
+
+                ScriptManager.GetComponent<bb>().UpdateLabelText(res.Text);
+
+                Speakobj.SetActive(false);
+
             }
-            catch (Exception e)
+            else
             {
-                message.text = "Error: " + e.Message;
+                    message.text = "Transcription successful but no text returned.";
             }
 
         }
