@@ -11,7 +11,7 @@ namespace Samples.Whisper
         [SerializeField] private TMP_Text message;
 
         private readonly string fileName = "output.wav";
-        private readonly int duration = 5;
+        private readonly int duration = 4;
 
         private AudioClip clip;
         private bool isRecording;
