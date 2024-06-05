@@ -48,6 +48,7 @@ namespace Samples.Whisper
         private async void EndRecording()
         {
             Microphone.End(null); // Stop the microphone after recording
+            Speakobj.SetActive(false); // Deactivate the Speakobj immediately after recording stops
 
             message.text = "Transcripting...";
 
@@ -65,7 +66,6 @@ namespace Samples.Whisper
             {
                 message.text = res.Text;
                 ScriptManager.GetComponent<bb>().UpdateLabelText(res.Text);
-                Speakobj.SetActive(false);
             }
             else
             {
@@ -74,6 +74,7 @@ namespace Samples.Whisper
 
             this.gameObject.SetActive(false); // Disable this GameObject
         }
+
 
         private void Update()
         {
