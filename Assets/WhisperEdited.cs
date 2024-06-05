@@ -20,6 +20,7 @@ namespace Samples.Whisper
 
         public GameObject whisperobj;
         public GameObject Speakobj;
+        public GameObject Transobj;
 
         public GameObject ScriptManager;
 
@@ -49,6 +50,7 @@ namespace Samples.Whisper
         {
             Microphone.End(null); // Stop the microphone after recording
             Speakobj.SetActive(false); // Deactivate the Speakobj immediately after recording stops
+            Transobj.SetActive(true); 
 
             message.text = "Transcripting...";
 
@@ -66,6 +68,7 @@ namespace Samples.Whisper
             {
                 message.text = res.Text;
                 ScriptManager.GetComponent<bb>().UpdateLabelText(res.Text);
+                Transobj.SetActive(false);
             }
             else
             {
