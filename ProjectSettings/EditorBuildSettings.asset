@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/TabletopBowlingGameBB.unity
     guid: 032e0abc80cec4b4a9df3110dde33d39
   - enabled: 1
+    path: Assets/Scenes/Onboarding.unity
+    guid: 70e99e47c124bb340b227473c3bb741d
+  - enabled: 1
     path: Assets/Scenes/TrishiaLabelingScene.unity
     guid: 3211d97e2d2016c4fb1cb17b4024b14a
   - enabled: 0
