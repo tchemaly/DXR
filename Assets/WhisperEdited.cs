@@ -66,8 +66,9 @@ namespace Samples.Whisper
             var res = await openai.CreateAudioTranscription(req);
             if (!string.IsNullOrEmpty(res.Text))
             {
-                message.text = res.Text;
-                ScriptManager.GetComponent<bb>().UpdateLabelText(res.Text);
+                String counterValue = GlobalCounter.GetCounter().ToString();
+                message.text = counterValue + ". " + res.Text;
+                ScriptManager.GetComponent<bb>().UpdateLabelText( counterValue + ". " + res.Text);
                 Transobj.SetActive(false);
             }
             else
